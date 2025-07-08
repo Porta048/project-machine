@@ -1,8 +1,19 @@
-# Predictive Maintenance Project - Fincantieri Inspired
+# Predictive Maintenance Project - DEMO VERSION
+
+> **🚧 DEMO VERSION - For Educational and Demonstration Purposes Only**
+>
+> This is a demonstration version of a predictive maintenance system. While it uses real machine learning techniques and datasets, it is designed for educational purposes and proof-of-concept demonstrations.
 
 ## Description
 
 This project implements a **predictive maintenance** system using **Machine Learning** and **Deep Learning** techniques to predict the **Remaining Useful Life (RUL)** of industrial engines. The project is inspired by the needs of companies like Fincantieri in the shipbuilding industry.
+
+**Demo Features:**
+- ✅ Real NASA Turbofan Engine dataset
+- ✅ LSTM-based RUL prediction models
+- ✅ Web interface with image analysis
+- ✅ Simulated sensor data generation
+- ⚠️ Results are for demonstration purposes only
 
 ## Objective
 
@@ -124,4 +135,18 @@ For questions or issues:
 
 ---
 
-**Note**: This project is for educational and demonstration purposes. For real industrial applications, the model must be validated on domain-specific data. 
+## Demo Disclaimer
+
+**⚠️ IMPORTANT**: This is a **DEMO VERSION** for educational and demonstration purposes only. 
+
+**Limitations:**
+- Simulated sensor data is generated from image analysis
+- Results should not be used for actual industrial decisions
+- Real-world deployment requires validation with domain-specific data
+- Production systems need real sensor integration and safety protocols
+
+**For Production Use:**
+- Validate models with real operational data
+- Implement proper sensor integration
+- Add safety and redundancy systems
+- Conduct thorough testing and validation
