@@ -1,0 +1,95 @@
+{
+  "model_info": {
+    "dataset": "FD004",
+    "model_type": "optimized",
+    "timestamp": "20250708_181739",
+    "tensorflow_version": "2.19.0",
+    "keras_version": "3.10.0",
+    "shap_available": true,
+    "lime_available": false
+  },
+  "performance_metrics": {
+    "standard": {
+      "rmse": 45303.63905913078,
+      "mae": 36160.51953125,
+      "r2": -762253.4410857928,
+      "mse": 2052419712.0
+    },
+    "phm08": {
+      "phm08_score": Infinity,
+      "early_predictions": 12,
+      "late_predictions": 200,
+      "total_predictions": 212
+    }
+  },
+  "model_architecture": {
+    "total_params": 324628,
+    "trainable_params": 323028,
+    "non_trainable_params": 1600,
+    "layers_count": 18
+  },
+  "training_info": {
+    "optimizer": {
+      "name": "adam",
+      "learning_rate": 0.0002441747346892953,
+      "weight_decay": null,
+      "clipnorm": null,
+      "global_clipnorm": null,
+      "clipvalue": null,
+      "use_ema": false,
+      "ema_momentum": 0.99,
+      "ema_overwrite_frequency": null,
+      "loss_scale_factor": null,
+      "gradient_accumulation_steps": null,
+      "beta_1": 0.9,
+      "beta_2": 0.999,
+      "epsilon": 1e-07,
+      "amsgrad": false
+    },
+    "loss_function": "mean_squared_error",
+    "metrics": [
+      "loss",
+      "compile_metrics"
+    ]
+  },
+  "interpretability": {
+    "top_5_features": [
+      [
+        "sensore_14_t43",
+        1956.8675720308372
+      ],
+      [
+        "sensore_14_t34",
+        1662.8964471552972
+      ],
+      [
+        "sensore_14_t6",
+        1446.0126233834349
+      ],
+      [
+        "sensore_14_t21",
+        1395.655156919101
+      ],
+      [
+        "sensore_14_t57",
+        1337.3611312954943
+      ]
+    ],
+    "analysis_completed": true,
+    "shap_plots_available": true
+  },
+  "hyperparameters": {
+    "conv_filters_1": 32,
+    "conv_filters_2": 192,
+    "conv_kernel": 5,
+    "conv_dropout": 0.1,
+    "lstm_units": 96,
+    "lstm_dropout": 0.1,
+    "lstm_recurrent_dropout": 0.1,
+    "dense1_units": 384,
+    "dense2_units": 192,
+    "dropout_dense1": 0.4,
+    "dropout_dense2": 0.4,
+    "learning_rate": 0.000976698895553929
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "model_info": {
+    "dataset": "FD003",
+    "model_type": "optimized",
+    "timestamp": "20250708_153000",
+    "tensorflow_version": "2.19.0",
+    "keras_version": "3.10.0",
+    "shap_available": true,
+    "lime_available": false
+  },
+  "performance_metrics": {
+    "standard": {
+      "rmse": 17.668729169878507,
+      "mae": 13.355799674987793,
+      "r2": 0.8100806352286976,
+      "mse": 312.1839904785156
+    },
+    "phm08": {
+      "phm08_score": 719.8178472946732,
+      "early_predictions": 45,
+      "late_predictions": 52,
+      "total_predictions": 97
+    }
+  },
+  "model_architecture": {
+    "total_params": 202508,
+    "trainable_params": 201676,
+    "non_trainable_params": 832,
+    "layers_count": 17
+  },
+  "training_info": {
+    "optimizer": {
+      "name": "adam",
+      "learning_rate": 2.4189657779061235e-05,
+      "weight_decay": null,
+      "clipnorm": null,
+      "global_clipnorm": null,
+      "clipvalue": null,
+      "use_ema": false,
+      "ema_momentum": 0.99,
+      "ema_overwrite_frequency": null,
+      "loss_scale_factor": null,
+      "gradient_accumulation_steps": null,
+      "beta_1": 0.9,
+      "beta_2": 0.999,
+      "epsilon": 1e-07,
+      "amsgrad": false
+    },
+    "loss_function": "mean_squared_error",
+    "metrics": [
+      "loss",
+      "compile_metrics"
+    ]
+  },
+  "interpretability": {
+    "top_5_features": [
+      [
+        "sensore_17_t44",
+        0.9863934014472573
+      ],
+      [
+        "sensore_12_t38",
+        0.9737404646845791
+      ],
+      [
+        "sensore_12_t36",
+        0.9031027549093918
+      ],
+      [
+        "sensore_21_t40",
+        0.680182493269861
+      ],
+      [
+        "sensore_4_t42",
+        0.6498265712240998
+      ]
+    ],
+    "analysis_completed": true,
+    "shap_plots_available": true
+  },
+  "hyperparameters": {
+    "conv1_filters": 96,
+    "conv1_kernel": 7,
+    "dropout1": 0.1,
+    "conv2_filters": 64,
+    "conv2_kernel": 5,
+    "dropout2": 0.2,
+    "conv3_filters": 256,
+    "dropout3": 0.30000000000000004,
+    "use_fourth_conv": false,
+    "dropout_dense1": 0.5,
+    "dense1_units": 384,
+    "dropout_dense2": 0.3,
+    "dense2_units": 200,
+    "learning_rate": 0.00019351725821120178,
+    "conv4_filters": 256
+  }
+}
