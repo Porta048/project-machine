@@ -1,0 +1,50 @@
+# Core ML and Deep Learning
+tensorflow>=2.13.0
+scikit-learn>=1.3.0
+numpy>=1.24.0
+pandas>=2.0.0
+
+# Web Interface
+Flask>=2.3.0
+Werkzeug>=2.3.0
+
+# Data Processing and Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+opencv-python>=4.8.0
+Pillow>=10.0.0
+
+# Model Optimization and Hyperparameter Tuning
+optuna>=3.3.0
+keras-tuner>=1.3.0
+
+# Performance and Monitoring
+tqdm>=4.65.0
+psutil>=5.9.0
+
+# Model Persistence and Serialization
+joblib>=1.3.0
+h5py>=3.9.0
+
+# Utilities
+pyyaml>=6.0
+json5>=0.9.0
+datetime
+typing-extensions>=4.5.0
+
+# Optional: GPU Support (uncomment if using GPU)
+# tensorflow-gpu>=2.12.0
+
+# Optional: Advanced Optimization (uncomment if needed)
+# ray[tune]>=2.5.0
+# hyperopt>=0.2.7
+
+# Optional: Model Interpretability (uncomment if needed)
+# shap>=0.41.0
+# lime>=0.2.0
+
+# Development and Testing (optional)
+# pytest>=7.3.0
+# pytest-cov>=4.1.0
+# black>=23.3.0
+# flake8>=6.0.0

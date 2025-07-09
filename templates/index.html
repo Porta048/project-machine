@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Engine Health Check - Demo</title>
+    <title>ML Core - Predictive Maintenance System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.9/dat.gui.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -12,230 +14,223 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background-color: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             color: #333;
-            line-height: 1.6;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
 
         .header {
-            background: #fff;
-            border-radius: 8px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             text-align: center;
+            margin-bottom: 30px;
+            color: white;
         }
 
         .header h1 {
-            font-size: 2.2em;
-            font-weight: 600;
-            color: #2c3e50;
+            font-size: 2.5em;
             margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .header p {
-            font-size: 1.1em;
-            color: #7f8c8d;
+            font-size: 1.2em;
+            opacity: 0.9;
         }
 
         .main-content {
-            background: #fff;
-            border-radius: 8px;
-            padding: 40px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
         }
 
-        .upload-section {
-            text-align: center;
-            margin-bottom: 40px;
+        .upload-section, .results-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
 
         .upload-area {
-            border: 2px dashed #3498db;
-            border-radius: 8px;
-            padding: 60px 20px;
-            background: #f8f9fa;
+            border: 3px dashed #667eea;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
             transition: all 0.3s ease;
             cursor: pointer;
             margin-bottom: 20px;
         }
 
         .upload-area:hover {
-            border-color: #2980b9;
-            background: #e3f2fd;
+            border-color: #764ba2;
+            background-color: #f8f9ff;
         }
 
         .upload-area.dragover {
-            border-color: #27ae60;
-            background: #e8f5e8;
+            border-color: #4CAF50;
+            background-color: #e8f5e8;
         }
 
         .upload-icon {
             font-size: 3em;
-            color: #3498db;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .model-selector {
             margin-bottom: 20px;
         }
 
-        .upload-text {
-            font-size: 1.2em;
+        .model-selector label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
             color: #555;
-            margin-bottom: 15px;
-            font-weight: 500;
         }
 
-        .upload-subtext {
-            color: #888;
-            font-size: 0.9em;
-        }
-
-        .file-input {
-            display: none;
+        .model-selector select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background: white;
         }
 
         .upload-btn {
-            background: #3498db;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-size: 1em;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin: 10px;
-            font-weight: 500;
+            transition: transform 0.2s ease;
+            width: 100%;
         }
 
         .upload-btn:hover {
-            background: #2980b9;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
 
-        .result-section {
-            display: none;
+        .upload-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .results-section {
+            min-height: 500px;
+        }
+
+        .results-header {
             text-align: center;
-            margin-top: 40px;
+            margin-bottom: 20px;
         }
 
-        .result-card {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 40px;
-            border: 1px solid #e9ecef;
+        .results-header h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .rul-display {
+            text-align: center;
             margin-bottom: 30px;
-        }
-
-        .result-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-        }
-
-        .result-title {
-            font-size: 2em;
-            font-weight: 600;
-            margin-bottom: 15px;
-        }
-
-        .result-good {
-            color: #27ae60;
-        }
-
-        .result-bad {
-            color: #e74c3c;
-        }
-
-        .result-description {
-            font-size: 1.1em;
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        .confidence-bar {
-            width: 100%;
-            height: 20px;
-            background: #ecf0f1;
+            padding: 20px;
             border-radius: 10px;
-            overflow: hidden;
-            margin: 20px 0;
+            background: #f8f9ff;
         }
 
-        .confidence-fill {
-            height: 100%;
-            transition: width 0.5s ease;
+        .rul-value {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
 
-        .confidence-fill.good {
-            background: linear-gradient(90deg, #27ae60, #2ecc71);
+        .rul-label {
+            font-size: 1.2em;
+            color: #666;
         }
 
-        .confidence-fill.bad {
-            background: linear-gradient(90deg, #e74c3c, #c0392b);
-        }
-
-        .confidence-text {
-            font-size: 0.9em;
-            color: #7f8c8d;
+        .health-status {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
             margin-top: 10px;
         }
 
-        .details-section {
-            background: #fff;
-            border-radius: 8px;
-            padding: 25px;
-            border: 1px solid #e9ecef;
+        .visualization-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
             margin-top: 20px;
         }
 
-        .details-title {
-            font-size: 1.2em;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 15px;
-            text-align: left;
+        .image-preview {
+            text-align: center;
         }
 
-        .detail-item {
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .visualization-3d {
+            height: 300px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #f5f5f5;
+        }
+
+        .model-info {
+            background: #f8f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .model-info h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .info-item {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
-            padding: 8px 0;
+            padding: 5px 0;
             border-bottom: 1px solid #eee;
-        }
-
-        .detail-item:last-child {
-            border-bottom: none;
-        }
-
-        .detail-label {
-            font-weight: 500;
-            color: #555;
-        }
-
-        .detail-value {
-            font-weight: 600;
-            color: #2c3e50;
         }
 
         .loading {
             display: none;
             text-align: center;
-            padding: 40px;
+            padding: 20px;
         }
 
         .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
             border-radius: 50%;
             width: 40px;
             height: 40px;
             animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
+            margin: 0 auto 15px;
         }
 
         @keyframes spin {
@@ -244,169 +239,30 @@
         }
 
         .error {
-            background: #f8d7da;
-            color: #721c24;
+            background: #ffebee;
+            color: #c62828;
             padding: 15px;
-            border-radius: 6px;
-            margin: 20px 0;
-            text-align: center;
-            border: 1px solid #f5c6cb;
-        }
-
-        .simulation-warning, .quality-warning {
-            background: #fff3cd;
-            border: 1px solid #ffeeba;
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin: 10px 0;
+            border-left: 4px solid #c62828;
         }
 
-        .warning-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            color: #856404;
-        }
-
-        .warning-icon {
-            font-size: 1.5em;
-            margin-right: 10px;
-        }
-
-        .warning-content p {
-            margin-bottom: 10px;
-            color: #856404;
-        }
-
-        .warning-content ul {
-            list-style: none;
-            padding-left: 20px;
-            margin-bottom: 10px;
-        }
-
-        .warning-content li {
-            margin-bottom: 5px;
-            color: #856404;
-        }
-
-        .warning-content strong {
-            color: #856404;
-        }
-
-        .info-section {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #eee;
-        }
-
-        .info-section h3 {
-            font-size: 1.4em;
-            font-weight: 600;
-            color: #2c3e50;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-        }
-
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 15px;
-            background: #f0f2f5;
-            border-radius: 6px;
-            border: 1px solid #e0e0e0;
-        }
-
-        .info-label {
-            font-weight: 500;
-            color: #555;
-            font-size: 0.9em;
-        }
-
-        .info-value {
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 1.1em;
-        }
-
-        .anomalies-list {
-            list-style: none;
-            padding-left: 20px;
-            margin-top: 10px;
-        }
-
-        .anomalies-list li {
-            margin-bottom: 8px;
-            color: #e74c3c;
-            font-weight: 500;
-        }
-        
-        .error-message, .warning-message {
-            background: #f8d7da;
-            border: 1px solid #f5c6cb;
+        .success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 15px;
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .warning-message {
-            background: #fff3cd;
-            border: 1px solid #ffeeba;
-        }
-        
-        .error-header, .warning-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            color: #721c24;
-        }
-        
-        .warning-header {
-            color: #856404;
-        }
-        
-        .error-icon, .warning-icon {
-            font-size: 1.5em;
-            margin-right: 10px;
-        }
-        
-        .error-content p, .warning-content p {
-            margin-bottom: 10px;
-            color: #721c24;
-        }
-        
-        .warning-content p {
-            color: #856404;
-        }
-        
-        .detailed-info {
-            margin-top: 30px;
+            margin: 10px 0;
+            border-left: 4px solid #2e7d32;
         }
 
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.8em;
-            }
-            
             .main-content {
-                padding: 20px;
+                grid-template-columns: 1fr;
             }
             
-            .container {
-                padding: 10px;
-            }
-            
-            .result-title {
-                font-size: 1.6em;
+            .visualization-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -414,86 +270,115 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Engine Health Check - DEMO</h1>
-            <p>Upload an engine image to check if it's in good condition (Demo Version)</p>
-        </div>
-
-        <div class="simulation-warning">
-            <div class="warning-header">
-                <span class="warning-icon">🚧</span>
-                <strong>Demo Version</strong>
-            </div>
-            <div class="warning-content">
-                <p><strong>This is a demonstration version of the Engine Health Check system.</strong></p>
-                <p>Features:</p>
-                <ul>
-                    <li>✅ Image analysis for visual defect detection</li>
-                    <li>✅ Simulated sensor data generation from images</li>
-                    <li>✅ RUL (Remaining Useful Life) prediction using trained models</li>
-                    <li>⚠️ Results are for demonstration purposes only</li>
-                </ul>
-                <p><strong>Note:</strong> This demo uses simulated sensor data derived from image analysis. In a production environment, real sensor data would be used for more accurate predictions.</p>
-            </div>
+            <h1>ML Core - Predictive Maintenance System</h1>
+            <p>Advanced RUL prediction with interactive 3D visualization</p>
         </div>
 
         <div class="main-content">
+            <!-- Sezione Upload -->
             <div class="upload-section">
+                <h2>Upload Engine Image</h2>
+                
+                <!-- Auto Selection Info -->
+                <div class="form-group">
+                    <div class="auto-selection-info" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                        <h4 style="margin: 0 0 10px 0; font-size: 16px;">Automatic Model Selection</h4>
+                        <p style="margin: 0; font-size: 14px; opacity: 0.9;">The system will automatically analyze your image and choose the most suitable model based on:</p>
+                        <ul style="margin: 10px 0 0 20px; font-size: 13px; opacity: 0.8;">
+                            <li>Visual complexity and texture analysis</li>
+                            <li>Color variance detection</li>
+                            <li>Gradient analysis</li>
+                            <li>Image entropy calculation</li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div class="upload-area" id="uploadArea">
                     <div class="upload-icon">📷</div>
-                    <div class="upload-text">Drag and drop engine image here or click to browse</div>
-                    <div class="upload-subtext">
-                        Supported formats: JPG, PNG, GIF, BMP (Max 16MB)
-                    </div>
+                    <h3>Drag your image here</h3>
+                    <p>or click to select</p>
+                    <p><small>Supported formats: JPG, PNG, GIF, BMP, TIFF</small></p>
                 </div>
-                <input type="file" id="fileInput" class="file-input" accept="image/*">
-                <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
-                    Choose File
-                </button>
+
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                <button class="upload-btn" id="uploadBtn" disabled>Analyze Engine</button>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing image and generating predictions...</p>
+                </div>
             </div>
 
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p>Analyzing engine condition...</p>
-            </div>
-
-            <div class="result-section" id="resultSection">
-                <div class="result-content">
-                    <div class="result-header">
-                        <div class="result-icon" id="resultIcon">✅</div>
-                        <div class="result-text">
-                            <h2 class="result-title" id="resultTitle">ENGINE IS GOOD</h2>
-                            <p class="result-description" id="resultDescription">The engine appears to be in good condition.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="confidence-section">
-                    <div class="confidence-bar">
-                            <div class="confidence-fill" id="confidenceFill"></div>
-                        </div>
-                        <span class="confidence-text" id="confidenceText">85%</span>
-                    </div>
-                    
-                    <div id="detailed-info" class="detailed-info">
-                        <!-- Detailed analysis information will be inserted here -->
+            <!-- Sezione Risultati -->
+            <div class="results-section">
+                <div class="results-header">
+                    <h2>Analysis Results</h2>
+                    <p>Results will appear here after upload</p>
                 </div>
+
+                <div id="resultsContent" style="display: none;">
+                    <div class="rul-display">
+                        <div class="rul-value" id="rulValue">--</div>
+                        <div class="rul-label">Remaining Useful Life (RUL)</div>
+                        <div class="health-status" id="healthStatus">Waiting...</div>
+                    </div>
+
+                    <div class="visualization-container">
+                        <div class="image-preview">
+                            <h3>Original Image</h3>
+                            <img id="originalImage" src="" alt="Uploaded image">
+                        </div>
+                        <div>
+                            <h3>3D Visualization</h3>
+                            <div class="visualization-3d" id="visualization3d"></div>
+                        </div>
+                    </div>
+
+                    <div class="model-info">
+                        <h3>Automatic Model Selection</h3>
+                        <div class="auto-selection-details" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                <span style="font-weight: bold; color: #2c3e50;">Selected Model:</span>
+                                <span id="selected-model" style="margin-left: 10px; padding: 4px 12px; background: #3498db; color: white; border-radius: 15px; font-size: 14px;"></span>
+                                <span id="confidence-badge" style="margin-left: 10px; padding: 4px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;"></span>
+                            </div>
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-weight: bold; color: #2c3e50;">Reasoning:</span>
+                                <p id="selection-reasoning" style="margin: 5px 0; font-style: italic; color: #555;"></p>
+                            </div>
+                            <div id="all-scores" style="margin-top: 10px;">
+                                <span style="font-weight: bold; color: #2c3e50;">All Model Scores:</span>
+                                <div id="scores-list" style="margin-top: 5px;"></div>
+                            </div>
+                        </div>
+                        
+                        <h4>Model Information</h4>
+                        <div class="info-grid" id="modelInfo">
+                            <!-- Informazioni modello dinamiche -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
+        let selectedFile = null;
+        let scene, camera, renderer;
+
+        // Gestione upload area
         const uploadArea = document.getElementById('uploadArea');
         const fileInput = document.getElementById('fileInput');
+        const uploadBtn = document.getElementById('uploadBtn');
         const loading = document.getElementById('loading');
-        const resultSection = document.getElementById('resultSection');
-        const resultIcon = document.getElementById('resultIcon');
-        const resultTitle = document.getElementById('resultTitle');
-        const resultDescription = document.getElementById('resultDescription');
-        const confidenceFill = document.getElementById('confidenceFill');
-        const confidenceText = document.getElementById('confidenceText');
-        const analysisDetails = document.getElementById('analysisDetails');
+        const resultsContent = document.getElementById('resultsContent');
 
-        // Drag and drop functionality
+        // Click per selezionare file
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Drag and drop
         uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
             uploadArea.classList.add('dragover');
@@ -506,328 +391,251 @@
         uploadArea.addEventListener('drop', (e) => {
             e.preventDefault();
             uploadArea.classList.remove('dragover');
+            
             const files = e.dataTransfer.files;
             if (files.length > 0) {
-                handleFile(files[0]);
+                handleFileSelect(files[0]);
             }
         });
 
-        uploadArea.addEventListener('click', () => {
-            fileInput.click();
-        });
-
+        // Selezione file
         fileInput.addEventListener('change', (e) => {
             if (e.target.files.length > 0) {
-                handleFile(e.target.files[0]);
+                handleFileSelect(e.target.files[0]);
             }
         });
 
-        function handleFile(file) {
+        function handleFileSelect(file) {
             if (!file.type.startsWith('image/')) {
-                showError('Please select a valid image file.');
+                showError('Please select a valid image file');
                 return;
             }
 
-            if (file.size > 16 * 1024 * 1024) {
-                showError('File size must be less than 16MB.');
-                return;
-            }
-
-            handleUpload(file);
+            selectedFile = file;
+            uploadBtn.disabled = false;
+            uploadArea.innerHTML = `
+                <div class="upload-icon">✅</div>
+                <h3>${file.name}</h3>
+                <p>File ready for analysis</p>
+            `;
         }
 
-        function handleUpload(file) {
-            const formData = new FormData();
-            formData.append('file', file);
+        // Upload e analisi
+        uploadBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
 
-            // Optional: Add operational context
-            const context = document.getElementById('operationalContext')?.value;
-            if (context) {
-                formData.append('operational_context', context);
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            loading.style.display = 'block';
+            uploadBtn.disabled = true;
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    displayResults(result);
+                } else {
+                    showError(result.error || 'Analysis error');
+                }
+            } catch (error) {
+                showError('Connection error: ' + error.message);
+            } finally {
+                loading.style.display = 'none';
+                uploadBtn.disabled = false;
+            }
+        });
+
+        function displayResults(result) {
+            // Mostra sezione risultati
+            resultsContent.style.display = 'block';
+
+            // RUL e stato di salute
+            document.getElementById('rulValue').textContent = result.rul_predicted;
+            document.getElementById('rulValue').style.color = result.health_color;
+            
+            const healthStatus = document.getElementById('healthStatus');
+            healthStatus.textContent = result.health_status;
+            healthStatus.style.backgroundColor = result.health_color;
+
+            // Immagine originale
+            const originalImage = document.getElementById('originalImage');
+            originalImage.src = 'data:image/jpeg;base64,' + result.image_data;
+
+            // Visualizzazione 3D
+            if (result.visualization_3d) {
+                create3DVisualization(result.visualization_3d);
             }
 
-            fetch('/upload', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                hideLoading();
-                
-                // Check for structured error response
-                if (data.status === 'error') {
-                    showError(`Error: ${data.error}`, data.details || 'Unknown error occurred');
-                    return;
-                }
-                
-                // Check for partial success
-                if (data.status === 'partial_success') {
-                    showWarning(data.message || 'Analysis completed with limitations');
-                }
-                
-                // Display results
-                displayResult(data);
-            })
-            .catch(error => {
-                hideLoading();
-                showError('Upload failed', error.message);
+            // Selezione automatica modello
+            displayAutoSelection(result.auto_selection);
+
+            // Informazioni modello
+            displayModelInfo(result.model_info, result.dataset_used);
+
+            showSuccess('Analysis completed successfully!');
+        }
+
+        function create3DVisualization(data) {
+            const container = document.getElementById('visualization3d');
+            container.innerHTML = ''; // Pulisci contenuto precedente
+
+            // Setup Three.js
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            renderer.setClearColor(0xf5f5f5);
+            container.appendChild(renderer.domElement);
+
+            // Crea geometria 3D
+            const geometry = new THREE.BufferGeometry();
+            const vertices = new Float32Array(data.vertices.flat());
+            const colors = new Float32Array(data.colors.flat());
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            // Materiale
+            const material = new THREE.PointsMaterial({ 
+                size: 0.02, 
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8
+            });
+
+            // Mesh
+            const points = new THREE.Points(geometry, material);
+            scene.add(points);
+
+            // Illuminazione
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.6);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight.position.set(1, 1, 1);
+            scene.add(ambientLight);
+            scene.add(directionalLight);
+
+            // Posiziona camera
+            camera.position.set(0.5, 0.5, 1.5);
+            camera.lookAt(0.5, 0.5, 0);
+
+            // Animazione rotazione
+            function animate() {
+                requestAnimationFrame(animate);
+                points.rotation.z += 0.005;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Gestione resize
+            window.addEventListener('resize', () => {
+                camera.aspect = container.offsetWidth / container.offsetHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.offsetWidth, container.offsetHeight);
             });
         }
-        
-        function showError(title, message) {
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'error-message';
-            errorDiv.innerHTML = `
-                <div class="error-header">
-                    <span class="error-icon">❌</span>
-                    <strong>${title}</strong>
-                </div>
-                <div class="error-content">
-                    <p>${message}</p>
-                </div>
-            `;
-            
-            // Clear previous results and show error
-            const resultSection = document.getElementById('resultSection');
-            resultSection.innerHTML = '';
-            resultSection.appendChild(errorDiv);
-            resultSection.style.display = 'block';
-            
-            // Hide upload area
-            document.getElementById('uploadArea').style.display = 'none';
-        }
-        
-        function showWarning(message) {
-            const warningDiv = document.createElement('div');
-            warningDiv.className = 'warning-message';
-            warningDiv.innerHTML = `
-                <div class="warning-header">
-                    <span class="warning-icon">⚠️</span>
-                    <strong>Warning</strong>
-                </div>
-                <div class="warning-content">
-                    <p>${message}</p>
-                </div>
-            `;
-            
-            // Insert warning at the top of results
-            const resultSection = document.getElementById('resultSection');
-            resultSection.insertBefore(warningDiv, resultSection.firstChild);
-        }
 
-        function displayResult(data) {
-            const visual = data.image_analysis;
-            const sensor = data.sensor_prediction;
+        function displayAutoSelection(autoSelection) {
+            document.getElementById('selected-model').textContent = autoSelection.selected_model;
+            document.getElementById('selection-reasoning').textContent = autoSelection.reasoning;
             
-            // Check for simulation warnings
-            if (data.sensor_data_info && data.sensor_data_info.simulation_info) {
-                showSimulationWarning(data.sensor_data_info.simulation_info);
-            }
+            // Badge di confidenza
+            const confidenceBadge = document.getElementById('confidence-badge');
+            const confidence = autoSelection.confidence;
+            confidenceBadge.textContent = `${(confidence * 100).toFixed(1)}%`;
             
-            // Check analysis quality
-            if (visual.analysis_quality === 'limited' || visual.analysis_quality === 'error') {
-                showAnalysisQualityWarning(visual.analysis_quality);
-            }
-            
-            // Determine overall engine condition
-            let isGood = true;
-            let confidence = 0;
-            let reasons = [];
-            
-            // Check visual assessment
-            if (visual.visual_assessment === 'Poor') {
-                isGood = false;
-                reasons.push('Visual defects detected');
-            }
-            
-            // Check sensor prediction
-            if (typeof sensor.rul === 'number') {
-                if (sensor.rul <= 20) {
-                    isGood = false;
-                    reasons.push('Critical RUL prediction');
-                } else if (sensor.rul <= 50) {
-                    reasons.push('Low RUL warning');
-                }
-            }
-            
-            // Calculate confidence
-            confidence = Math.round(visual.confidence * 100);
-            
-            // Display result
-            if (isGood) {
-                resultIcon.textContent = '✅';
-                resultIcon.className = 'result-icon result-good';
-                resultTitle.textContent = 'ENGINE IS GOOD';
-                resultTitle.className = 'result-title result-good';
-                resultDescription.textContent = 'The engine appears to be in good condition based on visual and sensor analysis.';
-                confidenceFill.className = 'confidence-fill good';
+            if (confidence >= 0.8) {
+                confidenceBadge.style.backgroundColor = '#27ae60';
+                confidenceBadge.style.color = 'white';
+            } else if (confidence >= 0.6) {
+                confidenceBadge.style.backgroundColor = '#f39c12';
+                confidenceBadge.style.color = 'white';
             } else {
-                resultIcon.textContent = '❌';
-                resultIcon.className = 'result-icon result-bad';
-                resultTitle.textContent = 'ENGINE NEEDS ATTENTION';
-                resultTitle.className = 'result-title result-bad';
-                resultDescription.textContent = 'The engine shows signs of issues that require attention.';
-                confidenceFill.className = 'confidence-fill bad';
+                confidenceBadge.style.backgroundColor = '#e74c3c';
+                confidenceBadge.style.color = 'white';
             }
             
-            // Update confidence bar
-            confidenceFill.style.width = confidence + '%';
-            confidenceText.textContent = confidence + '%';
+            // Mostra tutti i punteggi
+            const scoresList = document.getElementById('scores-list');
+            scoresList.innerHTML = '';
             
-            // Display detailed information
-            displayDetailedInfo(visual, sensor, data);
-            
-            // Show results
-            resultSection.style.display = 'block';
-            uploadArea.style.display = 'none';
-        }
-        
-                 function showSimulationWarning(simulationInfo) {
-             const warningDiv = document.createElement('div');
-             warningDiv.className = 'simulation-warning';
-             warningDiv.innerHTML = `
-                 <div class="warning-header">
-                     <span class="warning-icon">⚠️</span>
-                     <strong>Simulation Warning</strong>
-                 </div>
-                 <div class="warning-content">
-                     <p><strong>${simulationInfo.warning}</strong></p>
-                     <p><strong>Limitations:</strong></p>
-                     <ul>
-                         ${simulationInfo.limitations.map(lim => `<li>${lim}</li>`).join('')}
-                     </ul>
-                     <p><strong>For Production Use:</strong></p>
-                     <ul>
-                         ${simulationInfo.recommendations.map(rec => `<li>${rec}</li>`).join('')}
-                     </ul>
-                 </div>
-             `;
-             
-             // Insert warning before results
-             const resultsSection = document.querySelector('.result-section');
-             resultsSection.insertBefore(warningDiv, resultsSection.firstChild);
-         }
-        
-                 function showAnalysisQualityWarning(quality) {
-             const warningDiv = document.createElement('div');
-             warningDiv.className = 'quality-warning';
-             
-             let message = '';
-             if (quality === 'limited') {
-                 message = 'Some image analysis components failed. Results may be incomplete.';
-             } else if (quality === 'error') {
-                 message = 'Image analysis encountered errors. Results are limited.';
-             }
-             
-             warningDiv.innerHTML = `
-                 <div class="warning-header">
-                     <span class="warning-icon">⚠️</span>
-                     <strong>Analysis Quality Warning</strong>
-                 </div>
-                 <div class="warning-content">
-                     <p>${message}</p>
-                 </div>
-             `;
-             
-             // Insert warning before results
-             const resultsSection = document.querySelector('.result-section');
-             resultsSection.insertBefore(warningDiv, resultsSection.firstChild);
-         }
-        
-                 function displayDetailedInfo(visual, sensor, data) {
-             const detailsContainer = document.getElementById('detailed-info');
-            
-            let detailsHTML = `
-                <div class="info-section">
-                    <h3>📊 Visual Analysis</h3>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <span class="info-label">Image Size:</span>
-                            <span class="info-value">${visual.image_size[1]}x${visual.image_size[0]}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Brightness:</span>
-                            <span class="info-value">${visual.brightness.toFixed(1)}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Contrast:</span>
-                            <span class="info-value">${visual.contrast.toFixed(1)}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Edge Density:</span>
-                            <span class="info-value">${visual.edge_density.toFixed(4)}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Visual Assessment:</span>
-                            <span class="info-value ${visual.visual_assessment.toLowerCase()}">${visual.visual_assessment}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Analysis Quality:</span>
-                            <span class="info-value ${visual.analysis_quality}">${visual.analysis_quality}</span>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="info-section">
-                    <h3>⚡ Sensor Prediction</h3>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <span class="info-label">Dataset Used:</span>
-                            <span class="info-value">${sensor.dataset}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">RUL Prediction:</span>
-                            <span class="info-value">${typeof sensor.rul === 'number' ? sensor.rul.toFixed(1) + ' cycles' : sensor.rul}</span>
-                        </div>
-            `;
-            
-            // Add selection reason if available
-            if (sensor.selection_reason) {
-                detailsHTML += `
-                        <div class="info-item">
-                            <span class="info-label">Selection Reason:</span>
-                            <span class="info-value">${sensor.selection_reason.reason}</span>
-                        </div>
-                        <div class="info-item">
-                            <span class="info-label">Selection Confidence:</span>
-                            <span class="info-value">${(sensor.selection_reason.confidence * 100).toFixed(0)}%</span>
-                    </div>
+            Object.entries(autoSelection.all_scores).forEach(([model, score]) => {
+                const scoreItem = document.createElement('div');
+                scoreItem.style.cssText = 'display: flex; justify-content: space-between; padding: 2px 0; font-size: 13px;';
+                scoreItem.innerHTML = `
+                    <span>${model}:</span>
+                    <span style="font-weight: bold; color: ${model === autoSelection.selected_model ? '#3498db' : '#666'};">${(score * 100).toFixed(1)}%</span>
                 `;
-            }
-            
-            // Add user context if specified
-            if (sensor.user_context) {
-                detailsHTML += `
-                        <div class="info-item">
-                            <span class="info-label">User Context:</span>
-                            <span class="info-value">${sensor.user_context}</span>
-                    </div>
-                `;
-            }
-            
-            detailsHTML += `
-                    </div>
-                </div>
-            `;
-            
-            // Add anomalies if any
-            if (visual.anomalies_detected && visual.anomalies_detected.length > 0) {
-                detailsHTML += `
-                    <div class="info-section">
-                        <h3>🚨 Anomalies Detected</h3>
-                        <ul class="anomalies-list">
-                            ${visual.anomalies_detected.map(anomaly => `<li>${anomaly}</li>`).join('')}
-                        </ul>
-                    </div>
-                `;
-            }
-            
-            detailsContainer.innerHTML = detailsHTML;
+                scoresList.appendChild(scoreItem);
+            });
         }
 
-        function hideLoading() {
-            loading.style.display = 'none';
+        function displayModelInfo(modelInfo, dataset) {
+            const container = document.getElementById('modelInfo');
+            container.innerHTML = `
+                <div class="info-item">
+                    <span>Dataset:</span>
+                    <span>${dataset}</span>
+                </div>
+                <div class="info-item">
+                    <span>RMSE:</span>
+                    <span>${modelInfo.rmse || 'N/A'}</span>
+                </div>
+                <div class="info-item">
+                    <span>MAE:</span>
+                    <span>${modelInfo.mae || 'N/A'}</span>
+                </div>
+                <div class="info-item">
+                    <span>R² Score:</span>
+                    <span>${modelInfo.r2_score || 'N/A'}</span>
+                </div>
+                <div class="info-item">
+                    <span>Architettura:</span>
+                    <span>${modelInfo.architecture || 'LSTM'}</span>
+                </div>
+                <div class="info-item">
+                    <span>Tempo Training:</span>
+                    <span>${modelInfo.training_time || 'N/A'}</span>
+                </div>
+            `;
         }
+
+        function showError(message) {
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = message;
+            document.querySelector('.upload-section').appendChild(errorDiv);
+            
+            setTimeout(() => {
+                errorDiv.remove();
+            }, 5000);
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success';
+            successDiv.textContent = message;
+            document.querySelector('.results-section').appendChild(successDiv);
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 5000);
+        }
+
+        // Carica informazioni modelli all'avvio
+        fetch('/models/info')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Available models:', data);
+            })
+            .catch(error => {
+                console.error('Error loading model info:', error);
+            });
     </script>
 </body>
 </html>
