@@ -1,23 +1,14 @@
 
-# Security and sensitive files
-src/security/security.db*
-src/security/*.key
-data/security/*
-data/compliance_reports/*
-data/backups/*
-logs/*.log
-security_setup.log
-
-# Environment files
-.env
-.env.local
-.env.production
-
-# Python cache
+# ===== PYTHON =====
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -31,17 +22,283 @@ parts/
 sdist/
 var/
 wheels/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
-# IDE
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+.pybuilder/
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# poetry
+poetry.lock
+
+# pdm
+.pdm.toml
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# pytype static type analyzer
+.pytype/
+
+# Cython debug symbols
+cython_debug/
+
+# ===== MACHINE LEARNING =====
+# Model files
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.joblib
+*.model
+*.weights
+*.ckpt
+*.pb
+*.pth
+*.pt
+*.onnx
+*.tflite
+*.mlmodel
+
+# TensorFlow
+*.tfevents.*
+logs/
+tensorboard_logs/
+checkpoints/
+saved_models/
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Weights & Biases
+wandb/
+
+# ===== DATA =====
+# Dataset files
+*.csv
+*.tsv
+*.json
+*.jsonl
+*.parquet
+*.feather
+*.xlsx
+*.xls
+*.hdf
+*.mat
+*.npz
+*.npy
+
+# Data directories
+data/
+uploads/
+
+# Keep data structure
+!data/.gitkeep
+!data/README.md
+
+# ===== RESULTS & OUTPUTS =====
+# Results and artifacts
+results/
+outputs/
+artifacts/
+reports/
+figures/
+plots/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.pdf
+*.eps
+
+# Keep results structure
+!results/.gitkeep
+!results/README.md
+
+# ===== CONFIGURATION =====
+# Sensitive configuration
+config.py
+secrets.yaml
+secrets.json
+.secrets
+api_keys.txt
+credentials.json
+
+# Local configuration
+local_config.py
+local_settings.py
+.env.local
+.env.production
+
+# ===== IDE & EDITORS =====
+# VSCode
 .vscode/
-.idea/
-*.swp
-*.swo
-*~
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
-# OS
+# PyCharm
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ===== OPERATING SYSTEM =====
+# macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+
+# Windows
 Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ===== TEMPORARY FILES =====
+# Temporary directories
+tmp/
+temp/
+.tmp/
+.temp/
+cache/
+.cache/
+
+# Log files
+*.log
+logs/
+
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# ===== CUSTOM PROJECT =====
+# Project specific
+models/trained/
+models/checkpoints/
+models/ensemble_stacking/
+
+# Experiment tracking
+experiments/
+runs/
+
+# Keep important structure
+!logs/.gitkeep
+!models/.gitkeep
+!results/.gitkeep
+!uploads/.gitkeep
